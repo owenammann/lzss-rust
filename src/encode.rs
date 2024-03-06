@@ -45,9 +45,6 @@ pub fn encode(buffer: &mut Vec<u8>, buffer_size: usize, w: i32, n: i32) -> Vec<L
 
     // sliding window on a buffer with soft borders. 
     while i <= end as i32 {
-        let start = if i - w < 0 { 0 } else { i - w };
-        let window = std::str::from_utf8(&buffer[start as usize..(end+1) as usize]);
-
         let code = find_lcp(buffer, i, w, end);
         match code {
             LzssTuple::NoPrefix(_, _) => { 

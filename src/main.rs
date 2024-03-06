@@ -3,12 +3,14 @@ use std::fs::File;
 use std::io::{self, Read, Write, BufReader};
 use decode::decode;
 use encode::encode;
+use analyze::analyze;
 
 use crate::lzss_tuple::LzssTuple;
 
 mod lzss_tuple;
 mod encode;
 mod decode;
+mod analyze;
 
 fn read_bytes_into_buffer(file: &mut File, buffer: &mut [u8]) -> io::Result<usize> {
     file.read(buffer)
@@ -152,5 +154,8 @@ fn main() -> io::Result<()> {
 
     let decode_result = run_decoder_and_write(&encoded_file_name, &decoded_file_name);
 
-    decode_result
+    if decode_result.is_err() {
+        return decode_result;
+    }
+    analyze()
 }
